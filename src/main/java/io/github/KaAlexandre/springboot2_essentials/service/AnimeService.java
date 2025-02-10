@@ -1,14 +1,32 @@
 package io.github.KaAlexandre.springboot2_essentials.service;
 
 import io.github.KaAlexandre.springboot2_essentials.domain.Anime;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimeService {
+    private static List<Anime> animes = new ArrayList<>(List.of(new Anime("Boku no Hero", 1L), new Anime("Naruto", 2L)));
+
+
+
     // private final AnimeRepository AnimeRepository
     public List<Anime> listAll() {
-        return List.of(new Anime( "One Piece",1L), new Anime( "Berserk",2L));
+        return animes;
     }
+
+    public Anime findById(Long id) {
+        return animes.stream()
+                .filter(anime -> anime.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
+    }
+
+
 }

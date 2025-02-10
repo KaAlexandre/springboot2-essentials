@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class AnimeService {
-    private static List<Anime> animes = new ArrayList<>(List.of(new Anime("Boku no Hero", 1L), new Anime("Naruto", 2L)));
-
-
+    private static List<Anime> animes;
+    {
+        animes = new ArrayList<>(List.of(new Anime("One Piece", 1L), new Anime("Berserk", 2L)));
+    }
 
     // private final AnimeRepository AnimeRepository
     public List<Anime> listAll() {
@@ -27,6 +28,10 @@ public class AnimeService {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
-
+    public Anime save(Anime anime) {
+        anime.setId(ThreadLocalRandom.current().nextLong(3, 100000));
+        animes.add(anime);
+        return anime;
+    }
 
 }

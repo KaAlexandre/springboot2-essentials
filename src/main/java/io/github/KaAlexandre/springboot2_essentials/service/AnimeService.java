@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AnimeService {
     private static List<Anime> animes;
     {
-        animes = new ArrayList<>(List.of(new Anime("One Piece", 1L), new Anime("Berserk", 2L)));
+        animes = new ArrayList<>(List.of(new Anime(1L, "One Piece"), new Anime(2L, "Berserk")));
     }
 
     // private final AnimeRepository AnimeRepository

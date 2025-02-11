@@ -1,6 +1,7 @@
 package io.github.KaAlexandre.springboot2_essentials.service;
 
 import io.github.KaAlexandre.springboot2_essentials.domain.Anime;
+import io.github.KaAlexandre.springboot2_essentials.mapper.AnimeMapper;
 import io.github.KaAlexandre.springboot2_essentials.repository.AnimeRepository;
 import io.github.KaAlexandre.springboot2_essentials.requests.AnimePostResquestBody;
 import io.github.KaAlexandre.springboot2_essentials.requests.AnimePutRequestBody;
@@ -25,19 +26,16 @@ public class AnimeService {
         return animeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
-    public Anime save(AnimePostResquestBody animeRequest) {
-        return animeRepository.save(Anime.builder().name(animeRequest.getName()).build());
+    public Anime save(AnimePostResquestBody animePostResquestBody) {
+        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostResquestBody));
     }
     public void delete(long id) {
         animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
     public void replace(AnimePutRequestBody animePutRequestBody) {
       Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
-      Anime anime =Anime.builder()
-                .id(savedAnime.getId())
-                .name(animePutRequestBody
-                .getName())
-                .build();
+      Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+      anime.setId(savedAnime.getId());
         animeRepository.save(anime);
     }
 }
